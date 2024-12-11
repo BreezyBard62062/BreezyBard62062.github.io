@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的网页</title>
+    <title>甜瓜的网站</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #ccf;
             margin: 0;
             padding: 0;
+            min-height: 100vh;
         }
 
         header {
-            background-color: #4CAF50;
+            background-color: #33FFFF;
             color: white;
             text-align: center;
             padding: 15px 0;
@@ -39,6 +40,7 @@
 
         .content {
             padding: 20px;
+            margin-bottom: 60px; /* 给内容留出空间避免遮挡 */
         }
 
         footer {
@@ -46,9 +48,8 @@
             color: white;
             text-align: center;
             padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            position: relative; /* 让 footer 相对于内容流定位 */
+            margin-top: 20px;
         }
 
         .header-image {
@@ -66,30 +67,26 @@
     </header>
 
     <nav>
-        <a href="#home">首页</a>
-        <a href="#about">关于我</a>
-        <a href="#contact">联系我们</a>
+        <a href="/index.html">首页</a>
+        <a href="/sipn2.html">星冰阁网站</a>
     </nav>
-
     <div class="content">
-        <section id="home">
+        <center>
             <h2>首页</h2>
-            <p>这是我的个人网站。我喜欢分享我的兴趣和项目。</p>
-        </section>
+            <p>这里是甜瓜的网站</p>
 
-        <section id="about">
             <h2>关于我</h2>
-            <p>我是一个热爱编程和学习新技术的人。</p>
-        </section>
+            <p>甜瓜是一个普通的天文爱好者、SKDC成员、SRPN成员、SKPN与CTPN和风尘团邦（B组）管理员、数码爱好者（？mc玩家</p><del>身份真多</del>
 
-        <section id="contact">
-            <h2>联系我们</h2>
-            <p>如果你有任何问题，可以通过电子邮件联系我。</p>
-        </section>
+            <h2>我的各种主页</h2>
+            <a href="https://v.douyin.com/irhyYuq9/%205@1.com">→我的抖音主页←</a>
+            <a href="https://v.kuaishou.com/Quwfqx">→我的快手主页←</a>
+            <a href="https://www.facebook.com/profile.php?id=61570013226931">我的facebook主页</a>
+        </center>
     </div>
 
     <footer>
-        <p>&copy; 2024 我的网页. 保留所有权利。</p>
+        <p>&copy; 2024 甜瓜的网站. 保留所有权利。联系方式：抖音/快手私信或邮箱：andmi1@outlook.com</p>
     </footer>
 
 </body>
