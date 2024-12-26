@@ -167,37 +167,7 @@
     <a href="/resource.html">资源专区</a>
     <h2>留言板</h2>
     <p>不上线时可以留言</p>
-    <div class="container">
-        <form id="messageForm">
-            <textarea id="messageInput" placeholder="请输入留言..."></textarea>
-            <button type="submit">提交留言</button>
-        </form>
-        <div class="messages" id="messagesContainer"></div>
-    </div>
-
-    <script>
-        const form = document.getElementById('messageForm');
-        const messageInput = document.getElementById('messageInput');
-        const messagesContainer = document.getElementById('messagesContainer');
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // 防止表单提交刷新页面
-
-            const message = messageInput.value.trim();
-            if (message) {
-                // 创建新留言元素
-                const messageElement = document.createElement('div');
-                messageElement.className = 'message';
-                messageElement.textContent = message;
-
-                // 添加到留言容器
-                messagesContainer.prepend(messageElement);
-
-                // 清空输入框
-                messageInput.value = '';
-            }
-        });
-    </script>
+    <a href="http://note.ms/tiangualiuyanban">留言板</a>
         </center>
     </div>
 
