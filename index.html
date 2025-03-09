@@ -91,6 +91,113 @@
             setInterval(updateTime, 1000);
 
             // 获取经纬度
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜瓜的网站</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ccf;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #33FFFF;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .content {
+            padding: 20px;
+            margin-bottom: 60px; /* 给内容留出空间避免遮挡 */
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative; /* 让 footer 相对于内容流定位 */
+            margin-top: 20px;
+        }
+
+        .header-image {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 10px;
+        }
+/* 新增下载按钮样式 */
+        #downloadBtn {
+            margin-left: 10px;
+            background: #2196F3;
+            display: none; /* 默认隐藏 */
+        }
+        #downloadBtn.visible {
+            display: inline-block;
+        }
+        #qrcode canvas {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="http://user-assets.sxlcdn.com/images/1167011/Fk7Iv0f8PimFQH2iZkujj7x_b9oe.jpeg?imageMogr2/strip/auto-orient/thumbnail/300x300%3E/interlace/1/format/jpeg" alt="Logo" class="header-image">
+        <h1>欢迎来到甜瓜的网站</h1>
+        <script>
+        function updateTime() {
+            const now = new Date();
+            const timeElement = document.getElementById("time");
+            timeElement.textContent = now.toLocaleString();
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
+                    document.getElementById("location").textContent = `纬度: ${lat}, 经度: ${lon}`;
+                }, (error) => {
+                    document.getElementById("location").textContent = "无法获取位置：请检查权限或设备支持。";
+                });
+            } else {
+                document.getElementById("location").textContent = "您的浏览器不支持地理定位功能。";
+            }
+        }
+
+        window.onload = () => {
+            // 更新时间
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // 获取经纬度
             getLocation();
         };
     </script>
@@ -121,7 +228,7 @@
     <a href="https://v.kuaishou.com/Quwfqx" style="margin: 5px 0;">→我的快手主页←</a>
 </div>
             <h2>我在做的视频类型</h2>
-            <p>读评论，星球视频及其他</p>
+            <p>读评论，星球视频，Zerotermux系列及其他</p>
             <h2>粉丝数</h2>
             <table border="1">
 <tr>
@@ -130,17 +237,17 @@
 </tr>
 <tr>
   <td>抖音</td>
-  <td>1517</td>
+  <td>1531</td>
 </tr>
 <tr>
   <td>快手</td>
-  <td>36</td>
+  <td>35</td>
 <tr>
   <td>全网</td>
-  <td>1553</td>
+  <td>1567</td>
 </tr>
 </table>
-<p>*指大小号粉丝数相加，更新于2025/01/29</p>
+<p>*指大小号粉丝数相加，更新于2025/03/09</p>
 <div style="display: flex; flex-direction: column; align-items: center;">
     <h2>你要加入我创立的星冰阁吗？</h2>
 <p>先去星冰网站</p>
@@ -169,6 +276,72 @@
     <audio controls>
   <source src="https://music.163.com/song/media/outer/url?id=2088107815.mp3" type="audio/mpeg">
 </audio>
+<h2>甜瓜二维码生成器</h2>
+<textarea id="input" placeholder="输入内容或网址..." rows="5" cols="40"></textarea>
+    <button onclick="generate()">生成二维码</button>
+    <button id="downloadBtn" onclick="downloadQR()">下载PNG</button>
+    <div id="qrcode"></div>
+
+    <script src="https://cdn.staticfile.net/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script>
+        let qrInstance = null;
+
+        function generate() {
+            const text = document.getElementById('input').value.trim();
+            if (!text) return alert("请输入内容");
+
+            // 清除旧二维码
+            const container = document.getElementById('qrcode');
+            container.innerHTML = '';
+
+            // 显示下载按钮
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.classList.add('visible');
+
+            try {
+                qrInstance = new QRCode(container, {
+                    text: text,
+                    width: 256,
+                    height: 256,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } catch (e) {
+                console.error("生成失败:", e);
+                downloadBtn.classList.remove('visible');
+                alert("生成失败，请检查输入内容");
+            }
+        }
+
+        function downloadQR() {
+            if (!qrInstance) return;
+            
+            try {
+                const canvas = document.querySelector('#qrcode canvas');
+                const link = document.createElement('a');
+                
+                // 生成文件名
+                const filename = `QR_${Date.now()}.png`;
+                
+                // 跨浏览器兼容方案
+                if (typeof navigator.msSaveBlob !== 'undefined') { // IE/Edge
+                    const blob = canvas.msToBlob();
+                    navigator.msSaveBlob(blob, filename);
+                } else { // 现代浏览器
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            } catch (e) {
+                console.error("下载失败:", e);
+                alert("下载失败，请使用现代浏览器");
+            }
+        }
+    </script>
         </center>
     </div>
 
