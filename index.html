@@ -14,7 +14,7 @@
         }
 
         header {
-            background-color: #33FFFF;
+            background-color: #B0E0E6;
             color: white;
             text-align: center;
             padding: 15px 0;
@@ -57,7 +57,7 @@
             height: 64px;
             margin-bottom: 10px;
         }
-/* 新增下载按钮样式 */
+        /* 新增下载按钮样式 */
         #downloadBtn {
             margin-left: 10px;
             background: #2196F3;
@@ -70,39 +70,265 @@
             margin-top: 20px;
             border: 1px solid #ddd;
         }
-.card {
-             display: flex;
-             align-items: center;
-             flex-direction: column;
-             justify-content: center;
-             width: 10em;
-             min-width: 150px;
-             margin: 1rem;
-             padding: 1rem;
-             border-radius: 12px;
-             background-color: #ffffff;
-             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10),
-                         0 4px 8px rgba(0, 0, 0, 0.05),
-                         0 8px 16px rgba(0, 0, 0, 0.02),
-                         0 16px 32px rgba(0, 0, 0, 0.01);
-         }
-         .cardValue {
-             font-size: 2rem;
-             font-weight: bold;
-             margin-bottom: 0.5rem;
-         }
-         .cardLabel {
-             font-size: 1rem;
-             color: #666;
-         }
+        
+        /* 融合的卡片样式 - 来自SKDC */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .card {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            width: 10em;
+            min-width: 150px;
+            margin: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10),
+                        0 4px 8px rgba(0, 0, 0, 0.05),
+                        0 8px 16px rgba(0, 0, 0, 0.02),
+                        0 16px 32px rgba(0, 0, 0, 0.01);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: #3498db;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #27ae60);
+        }
+        
+        /* 新增卡片内容样式 */
+        .card h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e74c3c; /* 修改为红色系颜色 */
+            text-align: center;
+            width: 100%; /* 确保占满卡片宽度 */
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-align: center;
+            width: 100%; /* 确保占满卡片宽度 */
+        }
+        
+        .card a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 8px;
+            transition: color 0.3s ease;
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+        
+        .card a:hover {
+            color: #e74c3c;
+        }
+        
+        .card .card-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* 新增表格居中样式 */
+        .card table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%; /* 控制表格宽度 */
+        }
+        
+        .card td {
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        /* 修改标题居中样式 */
+        .card h3 {
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        
+        /* 时间显示样式 */
+        .time-container {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            margin: 10px auto;
+            max-width: 300px;
+        }
+        
+        .time-container div {
+            text-align: center;
+            font-size: 14px;
+            color: #2c3e50;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
-
     <header>
-        <img src="http://user-assets.sxlcdn.com/images/1167011/Fk7Iv0f8PimFQH2iZkujj7x_b9oe.jpeg?imageMogr2/strip/auto-orient/thumbnail/300x300%3E/interlace/1/format/jpeg" alt="Logo" class="header-image">
+    <img src="http://user-assets.sxlcdn.com/images/1167011/Fk7Iv0f8PimFQH2iZkujj7x_b9oe.jpeg?imageMogr2/strip/auto-orient/thumbnail/300x300%3E/interlace/1/format/jpeg" alt="Logo" class="header-image">
         <h1>欢迎来到甜瓜的网站</h1>
-        <script>
+        <div class="time-container">
+            <div id="time">加载中...</div>
+            <div id="location">正在获取位置...</div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="/index.html">首页</a>
+        <a href="/sipn2.html">星冰阁网站</a>
+        <a href="/resource.html">资源专区</a>
+    </nav>
+    
+    <div class="content">
+        <div class="card-container">
+            <div class="card">
+                <div class="card-content">
+                    <h2>首页</h2>
+                    <p>这里是甜瓜的网站</p>
+                    <p>本站于2024/8/12建成</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>关于我</h2>
+                    <p>甜瓜是一个普通的天文爱好者、SKDC成员、SRPN成员、SKPN与CTPN和风尘团邦（B组）管理员、数码爱好者（？mc玩家、原神玩家</p>
+                    <p><del>身份真多</del></p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>我的各种主页</h2>
+                    <a href="https://v.douyin.com/irhyYuq9/%205@1.com">→我的抖音主页←</a>
+                    <a href="https://v.kuaishou.com/Quwfqx">→我的快手主页←</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>我在做的视频类型</h2>
+                    <p>读评论，星球视频，Zerotermux系列及其他</p>
+                    <h3>粉丝数</h3>
+                    <table>
+                        <tr>
+                            <td>平台</td>
+                            <td>*数字</td>
+                        </tr>
+                        <tr>
+                            <td>抖音</td>
+                            <td>1573</td>
+                        </tr>
+                        <tr>
+                            <td>快手</td>
+                            <td>55</td>
+                        <tr>
+                            <td>全网</td>
+                            <td>1628</td>
+                        </tr>
+                    </table>
+                    <p>*指大小号粉丝数相加，更新于2025/07/27</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>你要加入我创立的星冰阁吗？</h2>
+                    <p>先去星冰网站</p>
+                    <a href="/sipn2.html">星冰阁网站</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>外部链接</h2>
+                    <details>
+                        <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                            <a href="https://srpn.top/">SRPN官网</a>
+                            <a href="https://skdc.rth1.xyz">SKDC官网</a>
+                            <a href="https://e2.rth1.xyz">earth2的网站</a>
+                            <a href="https://yi0528.mysxl.cn">水益的网站</a>
+                            <a href="https://nsak.srpn.top">nsakrty的网站</a>
+                            <a href="http://note.ms/skdcliaotianshi"><del>星联聊天室</del></a>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>资源专区</h2>
+                    <p>里面有一些东西</p>
+                    <a href="/resource.html">资源专区</a>
+                    <h3>留言板</h3>
+                    <p>不上线时可以留言</p>
+                    <a href="http://note.ms/tiangualiuyanban">留言板</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>甜瓜二维码生成器</h2>
+                    <div style="display: flex; justify-content: center;">
+                        <textarea id="input" placeholder="输入内容或网址..." rows="4" cols="20"></textarea>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 10px;">
+                        <button onclick="generate()">生成二维码</button>
+                        <button id="downloadBtn" onclick="downloadQR()">下载PNG</button>
+                    </div>
+                    <div id="qrcode" style="display: flex; justify-content: center; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>联系方式：抖音/快手私信</p>
+        <p>代码/内容贡献：甜瓜、<del>ChatGPT、Deepseek、腾讯元宝</del></p>
+    </footer>
+
+    <script>
+        // 时间与位置功能
         function updateTime() {
             const now = new Date();
             const timeElement = document.getElementById("time");
@@ -122,126 +348,44 @@
                 document.getElementById("location").textContent = "您的浏览器不支持地理定位功能。";
             }
         }
+        
+        // 卡片浮现动画
+        function initCardAnimations() {
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
 
-        window.onload = () => {
-            // 更新时间
-            updateTime();
-            setInterval(updateTime, 1000);
-
-            // 获取经纬度
-            getLocation();
-        };
-    </script>
-</head>
-<body>
-    <div class="container">
-        <div class="time" id="time">加载中...</div>
-        <div class="location" id="location">正在获取位置...</div>
-    </div>
-    </header>
-
-    <nav>
-        <a href="/index.html">首页</a>
-        <a href="/sipn2.html">星冰阁网站</a>
-        <a href="/resource.html">资源专区</a>
-    </nav>
-    <div class="content">
-        <center>
-<div class="card">
-            <h2>首页</h2>
-            <p>这里是甜瓜的网站</p>
-<p>本站于2024/8/12建成</p>
-</div>
-<div class="card">            
-<h2>关于我</h2>
-            <p>甜瓜是一个普通的天文爱好者、SKDC成员、SRPN成员、SKPN与CTPN和风尘团邦（B组）管理员、数码爱好者（？mc玩家、原神玩家</p><del>身份真多</del>
-</div>
-<div class="card">
-<span>
-            <h2>我的各种主页</h2>
-<div style="display: flex; flex-direction: column; align-items: center;">
-    <a href="https://v.douyin.com/irhyYuq9/%205@1.com" style="margin: 5px 0;">→我的抖音主页←</a>
-    <a href="https://v.kuaishou.com/Quwfqx" style="margin: 5px 0;">→我的快手主页←</a>
-</div>
-</div>
-</span>
-<div class="card">            
-<h2>我在做的视频类型</h2>
-            <p>读评论，星球视频，Zerotermux系列及其他</p>
-            <h2>粉丝数</h2>
-            <table border="1">
-<tr>
-    <td>平台</td>
-  <td>*数字</td>
-</tr>
-<tr>
-  <td>抖音</td>
-  <td>1573</td>
-</tr>
-<tr>
-  <td>快手</td>
-  <td>55</td>
-<tr>
-  <td>全网</td>
-  <td>1628</td>
-</tr>
-</table>
-<p>*指大小号粉丝数相加，更新于2025/07/27</p>
-</div>
-</span>
-<div style="display: flex; flex-direction: column; align-items: center;" class="card">
-    <h2>你要加入我创立的星冰阁吗？</h2>
-<p>先去星冰网站</p>
-    <a href="/sipn2.html" style="margin: 5px 0;">星冰阁网站</a>
-    </div>
-<div class="card">
-    <h2>友情链接</h2>
-    <details>
-    <div style="display: flex; flex-direction: column; align-items: center;">
-    <a href="https://srpn.top/" style="margin: 5px 0;">SRPN网</a>
-    <a href="https://skdcxlg.rth1.xyz" style="margin: 5px 0;">SKDC网</a>
-    <a href="https://e2.rth1.xyz" style="margin: 5px 0;">earth2的网站</a>
-    <a href="https://yi0528.mysxl.cn" style="margin: 5px 0;">水益的网站</a>
-    <a href="https://nsak.srpn.top" style="margin: 5px 0;">nsakrty的网站</a>
-    <a href="http://note.ms/skdcliaotianshi" style="margin: 5px 0;"><del>星联聊天室</del></a>
-    </div>
-    </details>
-</div>
-<div class="card">
-    <h2>资源专区</h2>
-    <p>里面有一些东西</p>
-    <a href="/resource.html">资源专区</a>
-    <h2>留言板</h2>
-    <p>不上线时可以留言</p>
-    <a href="http://note.ms/tiangualiuyanban">留言板</a>
-<h2>甜瓜二维码生成器</h2>
-<textarea id="input" placeholder="输入内容或网址..." rows="10" cols="20"></textarea>
-    <button onclick="generate()">生成二维码</button>
-    <button id="downloadBtn" onclick="downloadQR()">下载PNG</button>
-    <div id="qrcode"></div>
-
-    <script src="https://cdn.staticfile.net/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
-    <script>
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        }
+        
+        // 二维码功能
         let qrInstance = null;
-
+        
         function generate() {
             const text = document.getElementById('input').value.trim();
             if (!text) return alert("请输入内容");
 
-            // 清除旧二维码
             const container = document.getElementById('qrcode');
             container.innerHTML = '';
 
-            // 显示下载按钮
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.classList.add('visible');
 
             try {
                 qrInstance = new QRCode(container, {
                     text: text,
-                    width: 256,
-                    height: 256,
+                    width: 180,
+                    height: 180,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.H
@@ -259,15 +403,12 @@
             try {
                 const canvas = document.querySelector('#qrcode canvas');
                 const link = document.createElement('a');
-                
-                // 生成文件名
                 const filename = `QR_${Date.now()}.png`;
                 
-                // 跨浏览器兼容方案
-                if (typeof navigator.msSaveBlob !== 'undefined') { // IE/Edge
+                if (typeof navigator.msSaveBlob !== 'undefined') {
                     const blob = canvas.msToBlob();
                     navigator.msSaveBlob(blob, filename);
-                } else { // 现代浏览器
+                } else {
                     link.href = canvas.toDataURL('image/png');
                     link.download = filename;
                     document.body.appendChild(link);
@@ -279,14 +420,15 @@
                 alert("下载失败，请使用现代浏览器");
             }
         }
+
+        // 页面加载时初始化所有功能
+        window.onload = () => {
+            updateTime();
+            setInterval(updateTime, 1000);
+            getLocation();
+            initCardAnimations();
+        };
     </script>
-        </center>
-    </div>
-</div>
-
-    <footer>
-        <p>联系方式：抖音/快手私信</p>
-    </footer>
-
+    <script src="https://cdn.staticfile.net/qrcodejs/1.0.0/qrcode.min.js"></script>
 </body>
 </html>

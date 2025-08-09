@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>甜瓜的网站</title>
+    <title>甜瓜的资源专区</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
         }
 
         header {
-            background-color: #33FFFF;
+            background-color: #B0E0E6;
             color: white;
             text-align: center;
             padding: 15px 0;
@@ -57,39 +57,148 @@
             height: 64px;
             margin-bottom: 10px;
         }
-
-.card {
-             display: flex;
-             align-items: center;
-             flex-direction: column;
-             justify-content: center;
-             width: 10em;
-             min-width: 150px;
-             margin: 1rem;
-             padding: 1rem;
-             border-radius: 12px;
-             background-color: #ffffff;
-             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10),
-                         0 4px 8px rgba(0, 0, 0, 0.05),
-                         0 8px 16px rgba(0, 0, 0, 0.02),
-                         0 16px 32px rgba(0, 0, 0, 0.01);
-         }
-         .cardValue {
-             font-size: 2rem;
-             font-weight: bold;
-             margin-bottom: 0.5rem;
-         }
-         .cardLabel {
-             font-size: 1rem;
-             color: #666;
-         }
+        
+        /* 融合的卡片样式 - 来自SKDC */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .card {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 250px;
+            max-width: 320px;
+            margin: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10),
+                        0 4px 8px rgba(0, 0, 0, 0.05),
+                        0 8px 16px rgba(0, 0, 0, 0.02),
+                        0 16px 32px rgba(0, 0, 0, 0.01);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: #3498db;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #27ae60);
+        }
+        
+        /* 卡片内容样式 */
+        .card h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e74c3c; /* 红色系标题 */
+            text-align: center;
+            width: 100%;
+        }
+        
+        .card h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 10px 0 8px;
+            color: #3498db;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .card p {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .card a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 8px 0;
+            transition: color 0.3s ease;
+            text-align: center;
+            display: block;
+            width: 100%;
+            padding: 8px 0;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+        }
+        
+        .card a:hover {
+            color: #e74c3c;
+            background-color: #e9f7fe;
+        }
+        
+        .card .card-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* 时间显示样式 */
+        .time-container {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            margin: 10px auto;
+            max-width: 300px;
+        }
+        
+        .time-container div {
+            text-align: center;
+            font-size: 14px;
+            color: #2c3e50;
+            padding: 5px;
+        }
+        
+        /* 页面标题样式 */
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            color: #3498db;
+            margin: 20px 0 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
-
     <header>
         <img src="http://user-assets.sxlcdn.com/images/1167011/Fk7Iv0f8PimFQH2iZkujj7x_b9oe.jpeg?imageMogr2/strip/auto-orient/thumbnail/300x300%3E/interlace/1/format/jpeg" alt="Logo" class="header-image">
-        <h1>欢迎来到甜瓜的网站</h1>
+        <h1>欢迎来到甜瓜的资源专区</h1>
+        <div class="time-container">
+            <div id="time">加载中...</div>
+            <div id="location">正在获取位置...</div>
+        </div>
     </header>
 
     <nav>
@@ -97,40 +206,113 @@
         <a href="/sipn2.html">星冰阁网站</a>
         <a href="/resource.html">资源专区</a>
     </nav>
-    <center>
-    <h1>资源专区</h1>
-<div class="card">
-    <h2>简陋老稿</h2>
-    <p>随便编的</p>
-    <a href="https://www.123pan.com/s/VaDijv-VrmhH.html">下载</a>
-</div><div class="card">
-    <h2>iso制作工具</h2>
-    <p>iso制作工具，解压魔改过也能装成iso！（或虚拟机内外传输文件）</p>
-    <a href="https://www.123865.com/s/VaDijv-tJ1hH">工具</a></div>
-<div class="card">
-    <h2>魔改iso</h2>
-    <p>提取码:0121</p>
-    <a href="https://www.123pan.com/s/PasiVv-VSkrv.html">下载</a></div>
-<div class="card">
-    <h2>limbo手机虚拟机</h2>
-    <p>手机也能体验电脑！</p>
-    <a href="https://www.123pan.com/s/PFTzjv-fxh43.html">下载</a></div>
-<div class="card">
-    <h2>mc下载</h2>
-    <a href="https://mcapks.com">下载</a>
-    <details>
-    <h2>好使的基岩模组</h2>
-    <a href="https://faithfulpack.net/downloads">faithful64像素光影</a>
-    <a href="https://www.123865.com/s/VaDijv-FF4hH">钟表菜单</a>
-    </details>
-    <h2>免费mc服务器</h2>
-    <p>附教程</p>
-    <a href="https://rainyun.com/">链接</a>
-    <a href="https://b23.tv/8lT7Gbw">教程</a></div>
-    </center>
+    
+    <div class="content">
+        <h1 class="page-title">资源专区</h1>
+        
+        <div class="card-container">
+            <div class="card">
+                <div class="card-content">
+                    <h2>简陋老稿</h2>
+                    <p>随便编的</p>
+                    <a href="https://www.123pan.com/s/VaDijv-VrmhH.html">下载</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>iso制作工具</h2>
+                    <p>iso制作工具，解压魔改过也能装成iso！（或虚拟机内外传输文件）</p>
+                    <a href="https://www.123865.com/s/VaDijv-tJ1hH">工具</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>魔改iso</h2>
+                    <p>提取码:0121</p>
+                    <a href="https://www.123pan.com/s/PasiVv-VSkrv.html">下载</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>limbo手机虚拟机</h2>
+                    <p>手机也能体验电脑！</p>
+                    <a href="https://www.123pan.com/s/PFTzjv-fxh43.html">下载</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <h2>Minecraft下载</h2>
+                    <a href="https://mcapks.com">下载</a>
+                    
+                    <h2>好使的基岩模组</h2>
+                    <a href="https://faithfulpack.net/downloads">faithful64像素光影</a>
+                    <a href="https://www.123865.com/s/VaDijv-FF4hH">钟表菜单</a>
+                    
+                    <h2>免费mc服务器</h2>
+                    <p>附教程</p>
+                    <a href="https://rainyun.com/">服务器链接</a>
+                    <a href="https://b23.tv/8lT7Gbw">教程</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>联系方式：抖音/快手私信</p>
     </footer>
 
+    <script>
+        // 时间与位置功能
+        function updateTime() {
+            const now = new Date();
+            const timeElement = document.getElementById("time");
+            timeElement.textContent = now.toLocaleString();
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
+                    document.getElementById("location").textContent = `纬度: ${lat}, 经度: ${lon}`;
+                }, (error) => {
+                    document.getElementById("location").textContent = "无法获取位置：请检查权限或设备支持。";
+                });
+            } else {
+                document.getElementById("location").textContent = "您的浏览器不支持地理定位功能。";
+            }
+        }
+        
+        // 卡片浮现动画
+        function initCardAnimations() {
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        }
+        
+        // 页面加载时初始化所有功能
+        window.onload = () => {
+            updateTime();
+            setInterval(updateTime, 1000);
+            getLocation();
+            initCardAnimations();
+        };
+    </script>
 </body>
 </html>
