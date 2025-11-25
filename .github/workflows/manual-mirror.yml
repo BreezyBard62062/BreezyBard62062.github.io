@@ -31,9 +31,9 @@ jobs:
             --wait=1 \               # 请求间隔（防服务器压力）
             -e robots=off \          # 忽略 robots.txt
             --random-wait            # 随机等待（更友好爬取）
-            --domains=tiangua.rth1.xyz,www.tiangua.rth1.xyz \
+            --domains=tiangua.rth1.xyz \
             --directory-prefix=website-mirror \
-            https://tiangua.rth1.xyz/
+            http://tiangua.rth1.xyz/
 
       - name: Clean Up Unnecessary Files
         run: |
