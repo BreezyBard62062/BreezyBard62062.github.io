@@ -1,0 +1,49 @@
+name: Manual Mirror Website
+
+on:
+  workflow_dispatch:  # 仅允许手动触发
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 写入仓库权限
+      pages: write      # 部署 GitHub Pages 权限
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Mirror Website with Wget
+        run: |
+          # 创建临时目录并下载网站
+          rm -rf website-mirror  # 强制删除旧文件
+          mkdir -p website-mirror
+          wget \
+            --mirror \               # 递归下载
+            --convert-links \        # 转换为本地链接
+            --adjust-extension \     # 自动修复文件扩展名
+            --page-requisites \      # 下载所有资源（CSS/JS/图片）
+            --no-parent \            # 不下载上级目录
+            --no-check-certificate \ # 忽略 HTTPS 证书
+            --timeout=60 \           # 增加重试超时时间
+            --tries=5 \              # 增加重试次数
+            --wait=1 \               # 请求间隔（防服务器压力）
+            -e robots=off \          # 忽略 robots.txt
+            --random-wait            # 随机等待（更友好爬取）
+            --domains=tiangua.rth1.xyz,www.tiangua.rth1.xyz \
+            --directory-prefix=website-mirror \
+            https://tiangua.rth1.xyz/
+
+      - name: Clean Up Unnecessary Files
+        run: |
+          # 仅保留关键文件类型（可根据需要调整）
+          find website-mirror -type f \( -name '*.html' -o -name '*.css' -o -name '*.js' -o -name '*.png' -o -name '*.jpg' -o -name '*.gif' \) -exec cp --parents '{}' ./ \;
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website-mirror/tiangua.rth1.xyz
+          publish_branch: gh-pages
+          force_orphan: true  # 每次部署都清空旧内容
