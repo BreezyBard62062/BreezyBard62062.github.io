@@ -1,0 +1,90 @@
+name: Update Website from JSON
+
+on:
+  workflow_dispatch:  # 仅允许手动触发
+
+jobs:
+  update-website:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Download and process JSON data
+      run: |
+        # 下载JSON文件
+        echo "正在从API下载数据..."
+        curl -s "https://api-overseas.retiehe.com/backend/host-v3/site/export-json?domain=tiangua&username=b6sbpkovf4" -o website_data.json
+        
+        # 创建处理脚本
+        cat > process_json.js << 'EOF'
+        const fs = require('fs');
+        const path = require('path');
+        
+        try {
+          // 读取下载的JSON文件
+          const rawData = fs.readFileSync('website_data.json', 'utf8');
+          const data = JSON.parse(rawData);
+          
+          console.log('开始处理网页文件...');
+          let fileCount = 0;
+          
+          // 遍历JSON对象，写入对应的网页文件
+          for (const [filename, content] of Object.entries(data)) {
+            // 跳过 settings.rth
+            if (filename === 'settings.rth') {
+              console.log('跳过 settings.rth');
+              continue;
+            }
+            
+            // 确保目录存在（如果有子目录的话）
+            const dir = path.dirname(filename);
+            if (dir && dir !== '.') {
+              fs.mkdirSync(dir, { recursive: true });
+            }
+            
+            // 写入文件
+            fs.writeFileSync(filename, content);
+            console.log(`✅ 已创建: ${filename}`);
+            fileCount++;
+          }
+          
+          // 删除原始的JSON文件
+          fs.unlinkSync('website_data.json');
+          console.log(`🗑️ 已删除原始JSON文件`);
+          console.log(`🎉 处理完成！共创建 ${fileCount} 个网页文件`);
+          
+        } catch (error) {
+          console.error('❌ 处理过程中出错:', error);
+          process.exit(1);
+        }
+        EOF
+        
+        # 运行处理脚本
+        node process_json.js
+        
+    - name: Check for changes
+      id: check_changes
+      run: |
+        git add .
+        if git diff-index --quiet HEAD --; then
+          echo "changes=false" >> $GITHUB_OUTPUT
+          echo "没有检测到文件变化"
+        else
+          echo "changes=true" >> $GITHUB_OUTPUT
+          echo "检测到文件变化，准备提交"
+        fi
+        
+    - name: Commit and push changes
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Auto-update website files from JSON API [skip ci]"
+        git push
