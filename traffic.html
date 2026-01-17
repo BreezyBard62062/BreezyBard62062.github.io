@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜瓜的网站</title>
+    <style>
+    body {
+            font-family: Arial, sans-serif;
+            background-color: #ccf;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #B0E0E6;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+        }
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .content {
+            padding: 20px;
+            margin-bottom: 60px; /* 给内容留出空间避免遮挡 */
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative; /* 让 footer 相对于内容流定位 */
+            margin-top: 20px;
+        }
+
+        .header-image {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 10px;
+        }
+        /* 新增下载按钮样式 */
+        #downloadBtn {
+            margin-left: 10px;
+            background: #2196F3;
+            display: none; /* 默认隐藏 */
+        }
+        #downloadBtn.visible {
+            display: inline-block;
+        }
+        #qrcode canvas {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        /* 融合的卡片样式 - 来自SKDC */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .card {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            width: 10em;
+            min-width: 150px;
+            margin: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10),
+                        0 4px 8px rgba(0, 0, 0, 0.05),
+                        0 8px 16px rgba(0, 0, 0, 0.02),
+                        0 16px 32px rgba(0, 0, 0, 0.01);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: #3498db;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #27ae60);
+        }
+        
+        /* 新增卡片内容样式 */
+        .card h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e74c3c; /* 修改为红色系颜色 */
+            text-align: center;
+            width: 100%; /* 确保占满卡片宽度 */
+        }
+        
+        .card p {
+            font-size: 14px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-align: center;
+            width: 100%; /* 确保占满卡片宽度 */
+        }
+        
+        .card a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 8px;
+            transition: color 0.3s ease;
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+        
+        .card a:hover {
+            color: #e74c3c;
+        }
+        
+        .card .card-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* 新增表格居中样式 */
+        .card table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%; /* 控制表格宽度 */
+        }
+        
+        .card td {
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        /* 修改标题居中样式 */
+        .card h3 {
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        
+        /* 时间显示样式 */
+        .time-container {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            margin: 10px auto;
+            max-width: 300px;
+        }
+        
+        .time-container div {
+            text-align: center;
+            font-size: 14px;
+            color: #2c3e50;
+            padding: 5px;
+        }
+        
+        /* 留言板特定样式 */
+        .message-form-card, .messages-container-card {
+            width: 90%;
+            max-width: 600px;
+            min-width: 300px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #6a11cb;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .message-submit-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        
+        .message-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .messages-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #444;
+            border-bottom: 2px solid #6a11cb;
+            padding-bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .message {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #6a11cb;
+            transition: transform 0.3s;
+            width: 100%;
+        }
+        
+        .message:hover {
+            transform: translateX(5px);
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .message-author {
+            font-weight: bold;
+            color: #6a11cb;
+        }
+        
+        .message-email {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .message-time {
+            color: #999;
+            font-size: 0.85rem;
+        }
+        
+        .message-content {
+            color: #555;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+        
+        .empty-message {
+            text-align: center;
+            color: #888;
+            padding: 40px 20px;
+            font-style: italic;
+            width: 100%;
+        }
+        
+        .error-message {
+            background: #ffeaea;
+            color: #e74c3c;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e74c3c;
+            width: 100%;
+        }
+        
+        .success-message {
+            background: #eaffea;
+            color: #2ecc71;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2ecc71;
+            width: 100%;
+        }
+      /* 新增可视化样式 */
+      .stats-container {
+        max-width: 800px;
+        margin: 20px auto;
+      }
+      .stats-header {
+        margin-bottom: 20px;
+      }
+      .data-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+      .data-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-top: 3px solid;
+        transition: transform 0.2s;
+      }
+      .data-card:hover {
+        transform: translateY(-3px);
+      }
+      .card-pv {
+        border-top-color: #4286f4; /* 访问量(PV)用蓝色标识 */
+      }
+      .card-uv {
+        border-top-color: #34a853; /* 访客数(UV)用绿色标识 */
+      }
+      .card-title {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      .card-title::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      .card-pv .card-title::before {
+        background: #4286f4;
+      }
+      .card-uv .card-title::before {
+        background: #34a853;
+      }
+      .card-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        line-height: 1.2;
+      }
+      .loading {
+        color: #999;
+        font-style: italic;
+        font-size: 16px;
+      }
+      .stats-note {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #666;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+  <header>
+        <h1>欢迎来到甜瓜的网站</h1>
+        <div class="time-container">
+            <div id="time">加载中...</div>
+            <div id="location">正在获取位置...</div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="/index.html">首页</a>
+        <a href="/sipn2.html">星冰阁网站</a>
+        <a href="/resource.html">资源专区</a>
+    </nav>
+    <p>数据来源:<a href="https://www.busuanzi.cc/count.php?search=ws.breezy.qzz.io">不蒜子</a></p>
+
+    <div class="stats-container">
+      <div class="data-cards">
+        <!-- 本站总访问量(PV) -->
+        <div class="data-card card-pv">
+          <div class="card-title">本站总访问量</div>
+          <div class="card-value">
+            <span id="busuanzi_site_pv" class="loading">加载中...</span> 次
+          </div>
+        </div>
+
+        <!-- 本站总访客数(UV) -->
+        <div class="data-card card-uv">
+          <div class="card-title">本站总访客数</div>
+          <div class="card-value">
+            <span id="busuanzi_site_uv" class="loading">加载中...</span> 人
+          </div>
+        </div>
+
+        <!-- 本站今日访问量(PV) -->
+        <div class="data-card card-pv">
+          <div class="card-title">本站今日访问量</div>
+          <div class="card-value">
+            <span id="busuanzi_today_pv" class="loading">加载中...</span>
+            次
+          </div>
+        </div>
+
+        <!-- 本站今日访客数(UV) -->
+        <div class="data-card card-uv">
+          <div class="card-title">本站今日访客数</div>
+          <div class="card-value">
+            <span id="busuanzi_today_uv" class="loading">加载中...</span>
+            人
+          </div>
+        </div>
+      </div>
+
+      <!-- 指标说明 -->
+      <div class="stats-note">
+        <p>• 访问量(PV)：页面被打开的总次数，同一用户多次访问会重复计数</p>
+        <p>• 访客数(UV)：独立访问用户数，同一用户多次访问仅计数1次</p>
+      </div>
+    </div>
+    <script src="https://cdn.busuanzi.cc/busuanzi/3.6.9/busuanzi.min.js" defer></script>
+    <script>
+    // 时间与位置功能
+        function updateTime() {
+            const now = new Date();
+            const timeElement = document.getElementById("time");
+            timeElement.textContent = now.toLocaleString();
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
+                    document.getElementById("location").textContent = `纬度: ${lat}, 经度: ${lon}`;
+                }, (error) => {
+                    document.getElementById("location").textContent = "无法获取位置：请检查权限或设备支持。";
+                });
+            } else {
+                document.getElementById("location").textContent = "您的浏览器不支持地理定位功能。";
+            }
+        }
+      window.addEventListener("load", function () {
+        // 延时确保不蒜子数据已加载
+        setTimeout(() => {
+          const pvTotal = parseInt(
+            document.getElementById("busuanzi_site_pv")?.innerText || 0
+          );
+          const uvTotal = parseInt(
+            document.getElementById("busuanzi_site_uv")?.innerText || 0
+          );
+          const pvToday = parseInt(
+            document.getElementById("busuanzi_today_pv")?.innerText || 0
+          );
+          const uvToday = parseInt(
+            document.getElementById("busuanzi_today_uv")?.innerText || 0
+          );
+
+          // 计算 UV/PV 比率（保留两位小数）
+          const ratioTotal = uvTotal ? (pvTotal / uvTotal).toFixed(2) : "N/A";
+          const ratioToday = uvToday ? (pvToday / uvToday).toFixed(2) : "N/A";
+
+          // 创建并插入 DOM 元素
+          const statsNote = document.querySelector(".stats-note");
+          const div = document.createElement("div");
+          div.innerHTML = `
+        <p>• 本站总访问深度（PV/UV）：<strong>${ratioTotal}</strong></p>
+        <p>• 今日访问深度（PV/UV）：<strong>${ratioToday}</strong></p>
+      `;
+          statsNote.appendChild(div);
+        }, 500); // 稍微延迟，确保 busuanzi 加载完成
+      });
+    </script>
+        <footer>
+        <p>联系方式：抖音/快手私信或邮箱：admin@mail.breezy.dpdns.org</p>
+    </footer>
+  </body>
+</html>
