@@ -1,5 +1,0 @@
-/index.html
-/sipn2.html
-/resource.html
-/traffic.html
-/404.html
